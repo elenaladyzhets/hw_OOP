@@ -27,11 +27,14 @@ class TestProducts:
 
     def test_product_check_quantity(self, product):
         # напишите проверки на метод check_quantity
-        assert product.check_quantity(product.quantity)
+        assert product.check_quantity(product.quantity-1) # внутренняя граница
+        assert product.check_quantity(product.quantity)  # равное кол-во
+        assert not product.check_quantity(product.quantity + 1)  # проверка превышения
 
     def test_product_buy(self, product):
         #  напишите проверки на метод buy
-        assert not product.check_quantity(product.quantity + 1)
+        product.buy(10)
+        assert product.quantity == 990
 
     def test_product_buy_more_than_available(self, product):
         #  напишите проверки на метод buy,
@@ -71,8 +74,14 @@ class TestCart:
         cart.add_product(product2, 30)
         cart.remove_product(product, 50)
 
-        assert cart.products[product] == 0
+        assert product not in cart.products
         assert cart.products[product2] == 30
+
+    def test_cart_remove_product_partial(self, cart, product):
+        cart.add_product(product, 10)
+        cart.remove_product(product, 5)
+
+        assert cart.products[product] == 5
 
     def test_cart_remove_product_more_than_cart(self, cart, product): # Удаление товара больше, чем есть в корзине
         cart.add_product(product, 4)
