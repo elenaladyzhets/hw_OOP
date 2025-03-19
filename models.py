@@ -88,3 +88,4 @@ class Cart:
                 raise ValueError("Нет в наличие такого кол-ва товара на складе")
         for product, quantity in self.products.items():
                     product.buy(quantity)
+
